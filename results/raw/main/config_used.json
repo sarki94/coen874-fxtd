@@ -1,0 +1,54 @@
+{
+  "env": {
+    "id": "FrozenLake-v1",
+    "map_name": "8x8",
+    "is_slippery": true
+  },
+  "gamma": 0.99,
+  "fixed_point": {
+    "v_min": 0.0,
+    "v_max": 1.0
+  },
+  "train": {
+    "budget_steps": 1000000,
+    "eps_start": 1.0,
+    "eps_end": 0.05
+  },
+  "eval": {
+    "every_steps": 10000,
+    "rollouts": 100,
+    "final_rollouts": 1000,
+    "seed_base": 10000000
+  },
+  "hyperparameters": {
+    "qlearning": {
+      "alpha": 0.1,
+      "eps_decay_fraction": 0.8
+    },
+    "sarsa": {
+      "alpha": 0.1,
+      "eps_decay_fraction": 0.8
+    }
+  },
+  "name": "main",
+  "algorithms": [
+    "qlearning",
+    "sarsa"
+  ],
+  "precisions": [
+    "fp32",
+    "16",
+    "12",
+    "10",
+    "8",
+    "6"
+  ],
+  "roundings": [
+    "rtn",
+    "sr"
+  ],
+  "seeds": {
+    "start": 0,
+    "count": 20
+  }
+}

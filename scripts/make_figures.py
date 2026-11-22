@@ -54,7 +54,7 @@ def save(fig, name):
 def fig_learning_curves(runs, v_star, rnd_value):
     cv = curves(runs, "ckpt_value")
     precs = [p for p in PRECISION_ORDER if p != "fp32" and any(k[1] == p for k in cv)]
-    fig, axes = plt.subplots(1, len(precs), figsize=(7.16, 1.9), sharey=True, squeeze=False)
+    fig, axes = plt.subplots(1, len(precs), figsize=(7.16, 2.1), sharey=True, squeeze=False)
     for ax, prec in zip(axes[0], precs):
         for algo in ("qlearning", "sarsa"):
             if (algo, "fp32", "none") in cv:
@@ -71,13 +71,14 @@ def fig_learning_curves(runs, v_star, rnd_value):
                         label=f"{NAME[algo]}, {RND_NAME[rnd]}")
         ax.axhline(rnd_value / v_star, color=INK2, lw=0.8, ls="-.")
         ax.set_title(f"{prec}-bit Q-table")
-        ax.set_xlabel(r"Environment steps ($\times 10^5$)")
         ax.set_ylim(-0.05, 1.1)
     axes[0][0].set_ylabel(r"$V^{\pi}(s_0)\,/\,V^*(s_0)$")
     h, l = axes[0][0].get_legend_handles_labels()
     h += [plt.Line2D([], [], color=INK2, ls=":", lw=1.0), plt.Line2D([], [], color=INK2, ls="-.", lw=0.8)]
     l += ["FP32 reference (same colour)", "random policy"]
-    fig.legend(h, l, loc="lower center", ncol=6, frameon=False, bbox_to_anchor=(0.5, -0.12))
+    fig.supxlabel(r"Environment steps ($\times 10^5$)", fontsize=8, y=0.02)
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.legend(h, l, loc="upper center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.01))
     save(fig, "fig1_learning_curves")
 
 
@@ -123,11 +124,15 @@ def fig_sensitivity(df, predictions):
             ax.errorbar(x, med, yerr=[lo, hi], color=COL[algo], ls=LS[rnd], marker="o" if rnd == "sr" else "s",
                         ms=4, mfc=COL[algo] if rnd == "sr" else "white", capsize=2, lw=1.3,
                         label=f"{NAME[algo]}, {RND_NAME[rnd]}")
-        if predictions and algo in predictions["algorithms"]:
-            pr = predictions["algorithms"][algo]["mean_field_retained_rtn"]
+    if predictions:
+        algs = [a for a in ("qlearning", "sarsa") if a in predictions["algorithms"]]
+        prs = [predictions["algorithms"][a]["mean_field_retained_rtn"] for a in algs]
+        same = all(all(abs(pr[b] - prs[0][b]) < 1e-3 for b in pr) for pr in prs)
+        for a, pr in zip(algs if not same else algs[:1], prs if not same else prs[:1]):
             pb = sorted(int(b) for b in pr if int(b) >= min(bits))
-            ax.plot(pb, [pr[str(b)] for b in pb], color=COL[algo], lw=0.8, alpha=0.6, marker="x", ms=4,
-                    ls="-", label=f"{NAME[algo]}, predicted (nearest)")
+            lab = "a-priori prediction, nearest (both algorithms)" if same else f"{NAME[a]}, a-priori prediction"
+            ax.plot(pb, [pr[str(b)] for b in pb], color=INK2 if same else COL[a], lw=0.9, ls="-",
+                    marker="x", ms=4, alpha=0.8, label=lab)
     ax.set_xlabel("Q-table bit-width $b$ (fixed point on [0, 1])")
     ax.set_ylabel(r"Median final $V^{\pi}(s_0)/V^*(s_0)$")
     ax.invert_xaxis()
@@ -138,7 +143,8 @@ def fig_sensitivity(df, predictions):
 
 def fig_policy_maps(runs, df, model, v_star):
     """Greedy policy and value maps for the median-performing seed of three configurations."""
-    configs = [("qlearning", "fp32", "none"), ("qlearning", "8", "rtn"), ("qlearning", "8", "sr")]
+    configs = [("qlearning", "fp32", "none"), ("qlearning", "8", "rtn"), ("qlearning", "6", "rtn"),
+               ("qlearning", "6", "sr")]
     configs = [c for c in configs if any((r["algo"], r["precision"], r["rounding"]) == c for r in runs)]
     if not configs:
         return
@@ -147,7 +153,7 @@ def fig_policy_maps(runs, df, model, v_star):
     desc = env.unwrapped.desc.astype(str)
     n = desc.shape[0]
     arrows = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
-    fig, axes = plt.subplots(1, len(configs), figsize=(7.16, 2.5))
+    fig, axes = plt.subplots(1, len(configs), figsize=(7.16, 2.2))
     axes = np.atleast_1d(axes)
     for ax, c in zip(axes, configs):
         rs = [r for r in runs if (r["algo"], r["precision"], r["rounding"]) == c]
@@ -169,9 +175,11 @@ def fig_policy_maps(runs, df, model, v_star):
                 ax.annotate("", xy=(x + 0.32 * dx, y + 0.32 * dy), xytext=(x - 0.32 * dx, y - 0.32 * dy),
                             arrowprops=dict(arrowstyle="->", color=INK, lw=0.8))
         title = "FP32" if c[1] == "fp32" else f"{c[1]}-bit, {RND_NAME[c[2]]}"
-        ax.set_title(f"Q-learning, {title}\n(median seed, $V^\\pi(s_0)/V^*$ = {r['final_value'] / v_star:.2f})")
+        ax.set_title(f"{title}\n$V^\\pi(s_0)/V^*$ = {r['final_value'] / v_star:.2f}")
         ax.set_xticks([]); ax.set_yticks([]); ax.grid(False)
     fig.colorbar(im, ax=list(axes), shrink=0.8, label=r"$\max_a Q(s,a)$")
+    fig.suptitle("Q-learning, median seed of each configuration (arrows: greedy action; dots: all actions tied)",
+                 fontsize=8, y=1.04)
     save(fig, "fig4_policy_maps")
 
 

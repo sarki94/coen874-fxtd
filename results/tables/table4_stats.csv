@@ -1,0 +1,25 @@
+hypothesis,algorithm,precision,rounding,comparison,n,median_a,median_b,test,p,cliffs_delta,hedges_g,p_holm,magnitude
+H1: SR > RTN,qlearning,16,-,SR vs RTN,20/20,0.39,0.392,Mann-Whitney U (one-sided),7.95e-01,-0.15,-0.014,1.00e+00,small
+H1: SR > RTN,qlearning,12,-,SR vs RTN,20/20,0.381,0.39,Mann-Whitney U (one-sided),7.29e-01,-0.11,-0.18,1.00e+00,negligible
+H1: SR > RTN,qlearning,10,-,SR vs RTN,20/20,0.382,0.314,Mann-Whitney U (one-sided),7.07e-06,0.805,1.283,2.83e-05,large
+H1: SR > RTN,qlearning,8,-,SR vs RTN,20/20,0.347,0.353,Mann-Whitney U (one-sided),8.69e-01,-0.205,-0.553,1.00e+00,small
+H1: SR > RTN,qlearning,6,-,SR vs RTN,20/20,0.254,0.0,Mann-Whitney U (one-sided),4.00e-09,1.0,3.103,2.00e-08,large
+H1: SR > RTN,sarsa,16,-,SR vs RTN,20/20,0.385,0.39,Mann-Whitney U (one-sided),3.47e-01,0.075,0.145,6.95e-01,negligible
+H1: SR > RTN,sarsa,12,-,SR vs RTN,20/20,0.385,0.383,Mann-Whitney U (one-sided),3.57e-01,0.07,0.073,6.95e-01,negligible
+H1: SR > RTN,sarsa,10,-,SR vs RTN,20/20,0.391,0.375,Mann-Whitney U (one-sided),1.67e-03,0.545,0.656,6.67e-03,large
+H1: SR > RTN,sarsa,8,-,SR vs RTN,20/20,0.367,0.353,Mann-Whitney U (one-sided),1.58e-02,0.4,0.609,4.73e-02,medium
+H1: SR > RTN,sarsa,6,-,SR vs RTN,20/20,0.294,0.0,Mann-Whitney U (one-sided),4.00e-09,1.0,5.387,2.00e-08,large
+H2: retained(Q) != retained(SARSA),Q vs SARSA,16,rtn,Q-learning vs SARSA,20/20,0.946,0.939,Mann-Whitney U (two-sided),1.56e-01,0.265,0.046,1.00e+00,small
+H2: retained(Q) != retained(SARSA),Q vs SARSA,16,sr,Q-learning vs SARSA,20/20,0.941,0.929,Mann-Whitney U (two-sided),8.60e-01,0.035,-0.103,1.00e+00,negligible
+H2: retained(Q) != retained(SARSA),Q vs SARSA,12,rtn,Q-learning vs SARSA,20/20,0.94,0.923,Mann-Whitney U (two-sided),2.50e-01,0.215,0.325,1.00e+00,small
+H2: retained(Q) != retained(SARSA),Q vs SARSA,12,sr,Q-learning vs SARSA,20/20,0.92,0.928,Mann-Whitney U (two-sided),9.46e-01,0.015,0.098,1.00e+00,negligible
+H2: retained(Q) != retained(SARSA),Q vs SARSA,10,rtn,Q-learning vs SARSA,20/20,0.756,0.905,Mann-Whitney U (two-sided),6.61e-05,-0.74,-1.043,6.61e-04,large
+H2: retained(Q) != retained(SARSA),Q vs SARSA,10,sr,Q-learning vs SARSA,20/20,0.922,0.942,Mann-Whitney U (two-sided),5.43e-01,-0.115,-0.262,1.00e+00,negligible
+H2: retained(Q) != retained(SARSA),Q vs SARSA,8,rtn,Q-learning vs SARSA,20/20,0.85,0.85,Mann-Whitney U (two-sided),4.41e-01,0.145,0.442,1.00e+00,negligible
+H2: retained(Q) != retained(SARSA),Q vs SARSA,8,sr,Q-learning vs SARSA,20/20,0.836,0.885,Mann-Whitney U (two-sided),3.85e-02,-0.385,-0.659,3.47e-01,medium
+H2: retained(Q) != retained(SARSA),Q vs SARSA,6,rtn,Q-learning vs SARSA,20/20,0.0,0.0,Mann-Whitney U (two-sided),1.00e+00,0.0,,1.00e+00,negligible
+H2: retained(Q) != retained(SARSA),Q vs SARSA,6,sr,Q-learning vs SARSA,20/20,0.612,0.709,Mann-Whitney U (two-sided),2.62e-01,-0.21,-0.461,1.00e+00,small
+Omnibus: precision effect,qlearning,all,rtn,FP32 + 5 bit-widths,120,,,Kruskal-Wallis,6.09e-17,,,,
+Omnibus: precision effect,qlearning,all,sr,FP32 + 5 bit-widths,120,,,Kruskal-Wallis,2.83e-10,,,,
+Omnibus: precision effect,sarsa,all,rtn,FP32 + 5 bit-widths,120,,,Kruskal-Wallis,4.83e-12,,,,
+Omnibus: precision effect,sarsa,all,sr,FP32 + 5 bit-widths,120,,,Kruskal-Wallis,2.94e-08,,,,

@@ -1,0 +1,14 @@
+| Setting                       | Value                                                                                            |
+|:------------------------------|:-------------------------------------------------------------------------------------------------|
+| Training budget (env steps)   | 1,000,000 (all methods)                                                                          |
+| Epsilon schedule              | linear 1.0 -> 0.05 over eps_decay_fraction of the budget                                         |
+| Tuning grid (both algorithms) | alpha [0.05, 0.1, 0.2, 0.3] x eps_decay_fraction [0.4, 0.6, 0.8]; FP32; seeds 1000-1004          |
+| Selection rule                | highest mean final V^pi(s0); tie-break mean AUC                                                  |
+| Selected (qlearning)          | alpha = 0.1, eps_decay_fraction = 0.8                                                            |
+| Selected (sarsa)              | alpha = 0.1, eps_decay_fraction = 0.8                                                            |
+| Q-table initialisation        | 0 for all entries                                                                                |
+| Fixed-point grid              | unsigned b-bit codes over [0.0, 1.0], Delta = 1/(2^b - 1)                                        |
+| Bit-widths                    | fp32, 16, 12, 10, 8, 6                                                                           |
+| Rounding modes                | round-to-nearest (RTN), stochastic (SR)                                                          |
+| Reporting seeds               | 0-19 (20 per configuration)                                                                      |
+| Evaluation                    | every 10,000 steps: exact V^pi(s0) + 100 greedy rollouts on a separate env; final: 1000 rollouts |

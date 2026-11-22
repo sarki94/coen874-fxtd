@@ -8,6 +8,7 @@ Tables
   table2_hyperparams    tuning grid, selected hyperparameters, budgets, seeds
   table3_main_results   per configuration: mean [95% bootstrap CI] of every metric
   table4_stats          H1 (SR vs RTN), H2 (Q-learning vs SARSA), Kruskal-Wallis across bit-widths
+  table5_value_bias     mean (max_a Q - V*) over non-terminal states: over/under-estimation
   per_seed_scores       the unit of analysis: one row per run
 """
 from __future__ import annotations
@@ -166,6 +167,20 @@ def table_stats(df, metric="final_value"):
     write(out, "table4_stats")
 
 
+def table_value_bias(runs, V_star, env_cfg):
+    """Mean over non-terminal states of max_a Q(s,a) - V*(s): sign shows over/under-estimation."""
+    desc = make_env(env_cfg).unwrapped.desc.astype(str).ravel()
+    nt = np.array([c in "SF" for c in desc])
+    rows = {}
+    for r in runs:
+        k = (r["algo"], r["precision"], r["rounding"])
+        rows.setdefault(k, []).append(float(np.mean(r["q_final"].max(1)[nt] - V_star[nt])))
+    out = pd.DataFrame([dict(algorithm=k[0], precision=k[1], rounding=k[2], n_seeds=len(v),
+                             value_bias=fmt_ci(v, digits=4)) for k, v in rows.items()])
+    out["precision"] = pd.Categorical(out["precision"], PRECISION_ORDER, ordered=True)
+    write(out.sort_values(["algorithm", "precision", "rounding"]), "table5_value_bias")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--exp", default="main")
@@ -179,12 +194,14 @@ def main() -> None:
     V_star, Q_star = model.value_iteration(gamma)
     opt_success, _ = rollout_success_rate(make_env(main_cfg["env"]), greedy_policy(Q_star), 1000, 20_000_000)
     rnd_v = model.random_policy_value(gamma)[0]
-    df = per_seed_table(load_experiment(args.exp), V_star[0])
+    runs = load_experiment(args.exp)
+    df = per_seed_table(runs, V_star[0])
     write(df.round(5), "per_seed_scores")
     table_mdp(main_cfg, model, V_star[0], rnd_v, opt_success)
     table_hyperparams(main_cfg)
     table_main(df)
     table_stats(df)
+    table_value_bias(runs, V_star, main_cfg["env"])
     OUT.mkdir(parents=True, exist_ok=True)
     with open(OUT / "reference_points.json", "w", encoding="utf-8") as f:
         json.dump({"V_star_s0": V_star[0], "optimal_policy_success_100_steps": opt_success,

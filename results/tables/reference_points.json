@@ -1,0 +1,5 @@
+{
+  "V_star_s0": 0.41464036178745123,
+  "optimal_policy_success_100_steps": 0.664,
+  "random_policy_V_s0": 0.001099614810365857
+}

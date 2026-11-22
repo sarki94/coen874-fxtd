@@ -1,0 +1,11 @@
+# Step 1 of the protocol: choose a training budget at which the FP32 baselines have plateaued.
+# Same default hyperparameters for both algorithms; tuning seeds only (never the reporting seeds).
+base: base.yaml
+name: budget_check
+algorithms: [qlearning, sarsa]
+precisions: [fp32]
+roundings: []
+seeds: {start: 1000, count: 5}
+budget_grid: [250000, 500000, 1000000]
+eval:
+  every_steps: 25000

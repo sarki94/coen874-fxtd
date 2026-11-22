@@ -1,0 +1,9 @@
+# Tested with Python 3.13.18. PyTorch and Stable-Baselines3 are NOT used (tabular methods only).
+gymnasium==1.4.0
+numpy==2.5.3
+scipy==1.18.1
+matplotlib==3.11.2
+pandas==3.0.5
+PyYAML==6.0.3
+tabulate==0.10.0
+pytest==9.1.1

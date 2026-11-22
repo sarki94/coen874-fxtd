@@ -1,0 +1,14 @@
+# Step 2 of the protocol: equal tuning effort per algorithm (same 12-point grid, same 5 seeds),
+# at full precision only, on tuning seeds 1000-1004 (disjoint from reporting seeds 0-19).
+# Selection criterion: highest mean final value V^pi(s0), ties broken by mean AUC.
+base: base.yaml
+name: tuning
+algorithms: [qlearning, sarsa]
+precisions: [fp32]
+roundings: []
+seeds: {start: 1000, count: 5}
+tune_grid:
+  alpha: [0.05, 0.1, 0.2, 0.3]
+  eps_decay_fraction: [0.4, 0.6, 0.8]
+eval:
+  every_steps: 25000

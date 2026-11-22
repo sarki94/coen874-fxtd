@@ -1,0 +1,30 @@
+# Shared settings for every experiment. All hyperparameters live in config files.
+env:
+  id: FrozenLake-v1
+  map_name: 8x8
+  is_slippery: true          # intended move w.p. 1/3, each perpendicular move w.p. 1/3
+
+gamma: 0.99                  # as in the COEN874 Week 3 lab
+
+fixed_point:
+  v_min: 0.0                 # every Q-value on FrozenLake lies in [0, 1]
+  v_max: 1.0
+
+train:
+  budget_steps: 1000000      # identical step budget for every method; chosen by configs/budget_check.yaml
+  eps_start: 1.0             # linear GLIE-style decay, as in the Week 3 lab
+  eps_end: 0.05
+
+eval:
+  every_steps: 10000         # periodic greedy evaluation (exploration off)
+  rollouts: 100              # episodes per periodic checkpoint, separate env instance
+  final_rollouts: 1000       # episodes for the final evaluation
+  seed_base: 10000000        # evaluation seeds never overlap training seeds
+
+hyperparameters:             # tuned at FP32 on tuning seeds (see configs/tuning.yaml)
+  qlearning:
+    alpha: 0.1
+    eps_decay_fraction: 0.6
+  sarsa:
+    alpha: 0.1
+    eps_decay_fraction: 0.6

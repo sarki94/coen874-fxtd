@@ -1,0 +1,13 @@
+# Quick end-to-end check (about a minute): 2 seeds, small budget.
+base: base.yaml
+name: smoke
+algorithms: [qlearning, sarsa]
+precisions: [fp32, "8"]
+roundings: [rtn, sr]
+seeds: {start: 900, count: 2}
+train:
+  budget_steps: 20000
+eval:
+  every_steps: 5000
+  rollouts: 20
+  final_rollouts: 50

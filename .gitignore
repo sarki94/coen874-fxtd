@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+*.tmp.npz
+results/raw/smoke/
+results/figures/smoke/
+results/tables/smoke/
+.ipynb_checkpoints/

@@ -1,0 +1,8 @@
+# Step 3: the reported experiment. 2 algorithms x (FP32 + 5 bit-widths x 2 rounding modes) x 20 seeds.
+# Hyperparameters come from configs/tuned.yaml (selected at FP32 on tuning seeds 1000-1004).
+base: tuned.yaml
+name: main
+algorithms: [qlearning, sarsa]
+precisions: [fp32, "16", "12", "10", "8", "6"]
+roundings: [rtn, sr]
+seeds: {start: 0, count: 20}

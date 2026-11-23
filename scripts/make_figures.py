@@ -39,7 +39,7 @@ plt.rcParams.update({
     "xtick.labelsize": 7, "ytick.labelsize": 7, "axes.edgecolor": INK2, "axes.labelcolor": INK,
     "xtick.color": INK2, "ytick.color": INK2, "axes.spines.top": False, "axes.spines.right": False,
     "axes.grid": True, "grid.color": GRID, "grid.linewidth": 0.5, "lines.linewidth": 1.5,
-    "pdf.fonttype": 42, "savefig.bbox": "tight", "savefig.dpi": 200,
+    "pdf.fonttype": 42, "savefig.bbox": "tight", "savefig.dpi": 300,
 })
 
 

@@ -27,7 +27,7 @@ import pandas as pd  # noqa: E402
 from fxtd.analysis import PRECISION_ORDER, load_experiment, per_seed_table  # noqa: E402
 from fxtd.config import ROOT, load_config  # noqa: E402
 from fxtd.mdp import TabularModel, greedy_policy, make_env, rollout_success_rate  # noqa: E402
-from fxtd.stats import (bootstrap_ci, cliffs_delta, cliffs_magnitude, hedges_g, holm,  # noqa: E402
+from fxtd.stats import (bootstrap_ci, cliffs_delta, hedges_g, holm,  # noqa: E402
                         kruskal, mann_whitney)
 
 OUT = ROOT / "results" / "tables"
@@ -161,7 +161,6 @@ def table_stats(df, metric="final_value"):
     out = pd.DataFrame(rows)
     for c in ("median_a", "median_b", "cliffs_delta", "hedges_g"):
         out[c] = out[c].astype(float).round(3)
-    out["magnitude"] = out["cliffs_delta"].apply(lambda d: "" if pd.isna(d) else cliffs_magnitude(d))
     out["p"] = out["p"].map(lambda v: f"{v:.2e}")
     out["p_holm"] = out["p_holm"].map(lambda v: "" if pd.isna(v) else f"{v:.2e}")
     write(out, "table4_stats")

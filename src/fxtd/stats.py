@@ -33,12 +33,6 @@ def cliffs_delta(a, b) -> float:
     return float(((a > b).sum() - (a < b).sum()) / (a.size * b.size))
 
 
-def cliffs_magnitude(d: float) -> str:
-    """Romano et al. (2006) thresholds."""
-    d = abs(d)
-    return "negligible" if d < 0.147 else "small" if d < 0.33 else "medium" if d < 0.474 else "large"
-
-
 def hedges_g(a, b) -> float:
     a = np.asarray(a, float); b = np.asarray(b, float)
     na, nb = a.size, b.size

@@ -222,10 +222,10 @@ startTwoCol();
 // Abstract + index terms
 current.push(new Paragraph({ alignment: AlignmentType.JUSTIFIED, spacing: { after: 100 },
   children: [new TextRun({ text: "Abstract", font: FONT, size: 18, bold: true, italics: true }),
-    new TextRun({ text: "—", font: FONT, size: 18, bold: true }), ...runs(C.meta.abstract, { size: 18, bold: true })] }));
+    new TextRun({ text: "–", font: FONT, size: 18, bold: true }), ...runs(C.meta.abstract, { size: 18, bold: true })] }));
 current.push(new Paragraph({ alignment: AlignmentType.JUSTIFIED, spacing: { after: 120 },
   children: [new TextRun({ text: "Index Terms", font: FONT, size: 18, bold: true, italics: true }),
-    new TextRun({ text: "—" + C.meta.keywords, font: FONT, size: 18, bold: true })] }));
+    new TextRun({ text: "–" + C.meta.keywords, font: FONT, size: 18, bold: true })] }));
 
 function emitBlocks(blocks) {
   for (const b of blocks) {

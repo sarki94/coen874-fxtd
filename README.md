@@ -128,5 +128,7 @@ Week 3 lab's V* values. They also check the statistics helpers (Holm, Cliff's de
 - Stochastic rounding follows Gupta et al., "Deep Learning with Limited Numerical Precision",
   ICML 2015.
 - All code in this repository was written for this project; no third-party RL code is included.
-- AI-use disclosure: code and text were drafted with the assistance of Claude (Anthropic) and
-  reviewed, run and verified by the author.
+- AI-use disclosure: I used Claude as an assistant throughout this project: to draft the code and
+  analysis scripts, to assist with the literature search (cross-checked against my own search before
+  selecting the sources), and to draft the text of the paper, which I reviewed and revised. The research
+  direction, design decisions and final choices were mine. I reviewed, ran and verified all code and results.
